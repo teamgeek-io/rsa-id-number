@@ -1,0 +1,29 @@
+.DS_Store
+*.pyc
+__pycache__
+dist
+build
+docs/build
+docs/source/reference/services
+tests/cover
+tests/.coverage
+*.egg-info
+.vscode
+
+# Test state / virtualenvs
+.tox
+.coverage
+coverage.xml
+nosetests.xml
+
+# Common virtualenv names
+env
+env2
+env3
+venv
+
+# IntelliJ / PyCharm IDE
+.idea/
+
+# Visual Studio used to edit docs
+docs/source/.vs
