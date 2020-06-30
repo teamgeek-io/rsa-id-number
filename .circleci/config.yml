@@ -10,10 +10,6 @@ workflows:
           version: "3.6"
           requires:
             - build
-      - test-python-install:
-          version: "3.7"
-          requires:
-            - build
       - deploy:
           requires:
             - build
@@ -41,9 +37,6 @@ jobs:
           name: run tests
           command: |
             make test
-            codecov
-      - store_artifacts:
-          path: htmlcov/
   test-python-install:
     parameters:
       version:
@@ -66,9 +59,6 @@ jobs:
           name: run tests
           command: |
             make test
-            codecov
-      - store_artifacts:
-          path: htmlcov/
       - run:
           name: Smoke Test Install
           command: |
