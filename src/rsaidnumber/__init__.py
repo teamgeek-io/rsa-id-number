@@ -86,6 +86,20 @@ class IdNumber:
             self.error = f"Invalid citizenship indicator: '{citizenship}'!"
             return
 
+        digits = [int(d) for d in value]
+        digits.reverse()
+        sum = 0
+        for index, digit in enumerate(digits):
+            if (index + 1) % 2 == 0:
+                digit = digit * 2
+                if digit > 9:
+                    digit = digit - 9
+            sum = sum + digit
+
+        if not sum % 10 == 0:
+            self.error = "'{value}' contains an invalid checksum digit!"
+            return
+
     @property
     def valid(self) -> bool:
         """Return True if there is not error, False otherwise."""
