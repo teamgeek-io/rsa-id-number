@@ -41,9 +41,6 @@ jobs:
           name: run tests
           command: |
             make test
-            codecov
-      - store_artifacts:
-          path: htmlcov/
   test-python-install:
     parameters:
       version:
@@ -66,9 +63,6 @@ jobs:
           name: run tests
           command: |
             make test
-            codecov
-      - store_artifacts:
-          path: htmlcov/
       - run:
           name: Smoke Test Install
           command: |

@@ -52,5 +52,5 @@ def validate(id_number: str):
         datetime.strptime(f"{month}{year}{day}", "%y%m%d")
     except ValueError:
         msg = f"'{id_number}' contains an invalid date of birth!"
-        logger.exception(msg, id_number)
+        logger.debug(msg, id_number)
         raise ValueError(msg)
