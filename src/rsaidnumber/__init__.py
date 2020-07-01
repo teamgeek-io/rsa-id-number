@@ -1,29 +1,24 @@
-import re
 import logging
+import re
 from datetime import datetime
-from enum import Enum, auto
+
+from .constants import (
+    DATE_OF_BIRTH_FORMAT,
+    GENDER_FEMALE_MAX,
+    GENDER_FEMALE_MIN,
+    PERMANENT_RESIDENT_DIGIT,
+    RSA_ID_LENGTH,
+    SA_CITIZEN_DIGIT,
+    Citizenship,
+    Gender,
+)
+from .random import generate
 
 __version__ = "0.0.1"
 
+__all__ = ["Gender", "Citizenship", "IdNumber", "parse", "generate"]
+
 logger = logging.getLogger(__name__)
-
-RSA_ID_LENGTH = 13
-GENDER_FEMALE_MIN = 0
-GENDER_FEMALE_MAX = 4999
-GENDER_MALE_MIN = 5000
-GENDER_MALE_MAX = 9999
-CITIZENSHIP_SA_CITIZEN = 0
-CITIZENSHIP_PERMANENT_RESIDENT = 1
-
-
-class Gender(Enum):
-    FEMALE = auto()
-    MALE = auto()
-
-
-class Citizenship(Enum):
-    SA_CITIZEN = auto()
-    PERMANENT_RESIDENT = auto()
 
 
 class IdNumber:
@@ -64,7 +59,7 @@ class IdNumber:
         day = value[4:6]
         try:
             self.date_of_birth = datetime.strptime(
-                f"{year}{month}{day}", "%y%m%d"
+                f"{year}{month}{day}", DATE_OF_BIRTH_FORMAT
             )
         except ValueError:
             self.error = f"'{value}' contains an invalid date of birth!"
@@ -77,10 +72,10 @@ class IdNumber:
         else:
             self.gender = Gender.MALE
 
-        citizenship = int(value[10])
-        if citizenship == CITIZENSHIP_SA_CITIZEN:
+        citizenship = value[10]
+        if citizenship == SA_CITIZEN_DIGIT:
             self.citizenship = Citizenship.SA_CITIZEN
-        elif citizenship == CITIZENSHIP_PERMANENT_RESIDENT:
+        elif citizenship == PERMANENT_RESIDENT_DIGIT:
             self.citizenship = Citizenship.PERMANENT_RESIDENT
         else:
             self.error = f"Invalid citizenship indicator: '{citizenship}'!"
