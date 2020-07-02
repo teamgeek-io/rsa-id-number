@@ -92,7 +92,7 @@ class IdNumber:
             sum = sum + digit
 
         if not sum % 10 == 0:
-            self.error = "'{value}' contains an invalid checksum digit!"
+            self.error = f"'{value}' contains an invalid checksum digit!"
             return
 
     @property
