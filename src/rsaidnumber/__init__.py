@@ -1,6 +1,7 @@
 import logging
 import re
 from datetime import datetime
+from dateutil.relativedelta import relativedelta
 
 from .constants import (
     DATE_OF_BIRTH_FORMAT,
@@ -61,6 +62,11 @@ class IdNumber:
             self.date_of_birth = datetime.strptime(
                 f"{year}{month}{day}", DATE_OF_BIRTH_FORMAT
             )
+
+            if self.date_of_birth > datetime.now():
+                self.date_of_birth = self.date_of_birth - relativedelta(
+                    years=100
+                )
         except ValueError:
             self.error = f"'{value}' contains an invalid date of birth!"
             logger.debug(self.error, exc_info=True)
