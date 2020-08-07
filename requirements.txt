@@ -4,5 +4,3 @@
 #
 #    pip-compile
 #
-
-python-dateutil
