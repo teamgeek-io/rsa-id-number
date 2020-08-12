@@ -1,6 +1,6 @@
 import logging
 import re
-from datetime import datetime, timedelta
+from datetime import datetime
 
 from .constants import (
     DATE_OF_BIRTH_FORMAT,
@@ -63,8 +63,10 @@ class IdNumber:
             )
 
             if self.date_of_birth > datetime.now():
-                self.date_of_birth = self.date_of_birth - timedelta(
-                    days=36525
+                correct_year = self.date_of_birth.year - 100
+
+                self.date_of_birth = self.date_of_birth.replace(
+                    year=correct_year
                 )
         except ValueError:
             self.error = f"'{value}' contains an invalid date of birth!"
