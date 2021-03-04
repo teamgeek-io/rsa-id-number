@@ -14,7 +14,7 @@ from .constants import (
 )
 from .random import generate
 
-__version__ = "0.0.2"
+__version__ = "0.0.3"
 
 __all__ = ["Gender", "Citizenship", "IdNumber", "parse", "generate"]
 
@@ -61,6 +61,13 @@ class IdNumber:
             self.date_of_birth = datetime.strptime(
                 f"{year}{month}{day}", DATE_OF_BIRTH_FORMAT
             )
+
+            if self.date_of_birth > datetime.now():
+                correct_year = self.date_of_birth.year - 100
+
+                self.date_of_birth = self.date_of_birth.replace(
+                    year=correct_year
+                )
         except ValueError:
             self.error = f"'{value}' contains an invalid date of birth!"
             logger.debug(self.error, exc_info=True)
@@ -92,7 +99,7 @@ class IdNumber:
             sum = sum + digit
 
         if not sum % 10 == 0:
-            self.error = "'{value}' contains an invalid checksum digit!"
+            self.error = f"'{value}' contains an invalid checksum digit!"
             return
 
     @property

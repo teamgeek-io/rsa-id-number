@@ -47,6 +47,12 @@ def test_id_number_invalid_date_of_birth():
     )
 
 
+def test_id_number_old_date_of_birth():
+    id_number = rsaidnumber.IdNumber("5903198389082")
+    assert id_number.valid
+    assert id_number.date_of_birth < datetime.now()
+
+
 def test_id_number_valid():
     id_number = rsaidnumber.IdNumber("8012215312080")
     expected_date_of_birth = datetime(year=1980, month=12, day=21)
