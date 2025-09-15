@@ -49,6 +49,11 @@ ValueError: '8801235111080' contains an invalid checksum digit!
 >>> id_number = rsaidnumber.parse('8801235111080', False)
 >>> id_number.valid
 False
+
+Support for temporary ID numbers issued to refugees can be opted into:
+>>> id_number = rsaidnumber.parse('8012215312288', allow_refugee=True)
+>>> id_number.valid
+True
 ```
 
 # Contributing
