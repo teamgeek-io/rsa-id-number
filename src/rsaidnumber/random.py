@@ -11,6 +11,7 @@ from .constants import (
     GENDER_MALE_MAX,
     SA_CITIZEN_DIGIT,
     PERMANENT_RESIDENT_DIGIT,
+    REFUGEE_DIGIT,
     RACE_DIGIT,
     Gender,
     Citizenship,
@@ -98,8 +99,10 @@ def make_id_number(
     gender_digits = generate_gender_digits(gender)
     if citizenship == Citizenship.SA_CITIZEN:
         citizenship_digit = SA_CITIZEN_DIGIT
-    else:
+    elif citizenship == Citizenship.PERMANENT_RESIDENT:
         citizenship_digit = PERMANENT_RESIDENT_DIGIT
+    else:
+        citizenship_digit = REFUGEE_DIGIT
     digits = "".join(
         [date_of_birth_digits, gender_digits, citizenship_digit, RACE_DIGIT]
     )
@@ -136,7 +139,11 @@ def generate(
         gender = choice([Gender.MALE, Gender.FEMALE])
     if not citizenship:
         citizenship = choice(
-            [Citizenship.SA_CITIZEN, Citizenship.PERMANENT_RESIDENT],
+            [
+                Citizenship.SA_CITIZEN,
+                Citizenship.PERMANENT_RESIDENT,
+                Citizenship.REFUGEE,
+            ],
         )
 
     return make_id_number(

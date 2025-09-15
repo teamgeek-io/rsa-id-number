@@ -9,6 +9,7 @@ from .constants import (
     PERMANENT_RESIDENT_DIGIT,
     RSA_ID_LENGTH,
     SA_CITIZEN_DIGIT,
+    REFUGEE_DIGIT,
     Citizenship,
     Gender,
 )
@@ -66,7 +67,7 @@ class IdNumber:
                 correct_year = self.date_of_birth.year - 100
 
                 self.date_of_birth = self.date_of_birth.replace(
-                    year=correct_year
+                    year=correct_year,
                 )
         except ValueError:
             self.error = f"'{value}' contains an invalid date of birth!"
@@ -84,6 +85,10 @@ class IdNumber:
             self.citizenship = Citizenship.SA_CITIZEN
         elif citizenship == PERMANENT_RESIDENT_DIGIT:
             self.citizenship = Citizenship.PERMANENT_RESIDENT
+        elif citizenship == PERMANENT_RESIDENT_DIGIT:
+            self.citizenship = Citizenship.PERMANENT_RESIDENT
+        elif citizenship == REFUGEE_DIGIT:
+            self.citizenship = Citizenship.REFUGEE
         else:
             self.error = f"Invalid citizenship indicator: '{citizenship}'!"
             return
