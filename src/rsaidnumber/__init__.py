@@ -9,12 +9,13 @@ from .constants import (
     PERMANENT_RESIDENT_DIGIT,
     RSA_ID_LENGTH,
     SA_CITIZEN_DIGIT,
+    REFUGEE_DIGIT,
     Citizenship,
     Gender,
 )
 from .random import generate
 
-__version__ = "0.0.3"
+__version__ = "0.1.0"
 
 __all__ = ["Gender", "Citizenship", "IdNumber", "parse", "generate"]
 
@@ -22,12 +23,13 @@ logger = logging.getLogger(__name__)
 
 
 class IdNumber:
-    def __init__(self, value: str):
+    def __init__(self, value: str, allow_refugee: bool = False):
         self.value = value
         self.error = None
         self.date_of_birth = None
         self.gender = None
         self.citizenship = None
+        self.allow_refugee = allow_refugee
         self.parse()
 
     def clean(self):
@@ -66,7 +68,7 @@ class IdNumber:
                 correct_year = self.date_of_birth.year - 100
 
                 self.date_of_birth = self.date_of_birth.replace(
-                    year=correct_year
+                    year=correct_year,
                 )
         except ValueError:
             self.error = f"'{value}' contains an invalid date of birth!"
@@ -84,6 +86,8 @@ class IdNumber:
             self.citizenship = Citizenship.SA_CITIZEN
         elif citizenship == PERMANENT_RESIDENT_DIGIT:
             self.citizenship = Citizenship.PERMANENT_RESIDENT
+        elif self.allow_refugee and citizenship == REFUGEE_DIGIT:
+            self.citizenship = Citizenship.REFUGEE
         else:
             self.error = f"Invalid citizenship indicator: '{citizenship}'!"
             return
@@ -111,7 +115,9 @@ class IdNumber:
         return self.clean()
 
 
-def parse(value: str, raise_exc: bool = True) -> IdNumber:
+def parse(
+    value: str, raise_exc: bool = True, allow_refugee: bool = False
+) -> IdNumber:
     """Parse `value` and validate against the RSA ID number format.
 
     Args:
@@ -129,7 +135,7 @@ def parse(value: str, raise_exc: bool = True) -> IdNumber:
         >>> id_number = rsaidnumber.parse(value)
 
     """
-    id_number = IdNumber(value)
+    id_number = IdNumber(value, allow_refugee=allow_refugee)
     id_number.parse()
     if not id_number.valid and raise_exc:
         raise ValueError(id_number.error)

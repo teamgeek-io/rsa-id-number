@@ -4,7 +4,7 @@ tests_dir := $(CURDIR)/tests
 build_dir := $(CURDIR)/build
 dist_dir := $(CURDIR)/dist
 
-ENV_NAME = env
+ENV_NAME = .venv
 PYTHON_COMMAND ?= python
 make_env = $(PYTHON_COMMAND) -m venv $(ENV_NAME)
 env_dir = $(CURDIR)/$(ENV_NAME)
@@ -14,13 +14,6 @@ PYTHONPATH = $(source_dir):$(ODOO_COMMUNITY_PATH)
 
 PYTEST_FILE_OR_DIR ?= tests
 pytest_temp_files := .coverage .pytest_cache
-
-define create-env
-	@echo Creating $@...
-	$(make_env)
-	$(bin_dir)/pip install --upgrade pip
-	$(bin_dir)/pip install pip-tools
-endef
 
 define clear-python-cache
 	@echo Clearing Python cache...
@@ -34,12 +27,9 @@ endef
 .PHONY: all
 all: install test
 
-env:
-	$(create-env)
-
 .PHONY: install
-install: env
-	$(bin_dir)/pip-sync requirements.txt dev-requirements.txt
+install:
+	uv sync
 
 .PHONY: lint
 lint:
@@ -58,15 +48,10 @@ test: lint
 		--cov-fail-under 0 						\
 		$(PYTEST_FILE_OR_DIR)
 
-.PHONY: verify
-verify:
-	$(bin_dir)/python setup.py verify
-
 dist:
-	$(bin_dir)/python setup.py sdist
-	$(bin_dir)/python setup.py bdist_wheel
+	uv build
 
-.PHONY: verify
+.PHONY:
 upload: dist
 	$(bin_dir)/twine upload $(dist_dir)/*
 
