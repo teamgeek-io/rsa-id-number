@@ -8,6 +8,7 @@ GENDER_MALE_MIN = 5000
 GENDER_MALE_MAX = 9999
 SA_CITIZEN_DIGIT = "0"
 PERMANENT_RESIDENT_DIGIT = "1"
+REFUGEE_DIGIT = "2"
 RACE_DIGIT = "8"  # used until 1980s
 
 
@@ -19,3 +20,4 @@ class Gender(Enum):
 class Citizenship(Enum):
     SA_CITIZEN = auto()
     PERMANENT_RESIDENT = auto()
+    REFUGEE = auto()
