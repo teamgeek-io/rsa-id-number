@@ -85,8 +85,6 @@ class IdNumber:
             self.citizenship = Citizenship.SA_CITIZEN
         elif citizenship == PERMANENT_RESIDENT_DIGIT:
             self.citizenship = Citizenship.PERMANENT_RESIDENT
-        elif citizenship == PERMANENT_RESIDENT_DIGIT:
-            self.citizenship = Citizenship.PERMANENT_RESIDENT
         elif citizenship == REFUGEE_DIGIT:
             self.citizenship = Citizenship.REFUGEE
         else:
