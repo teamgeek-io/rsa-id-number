@@ -1,6 +1,7 @@
 import re
 from datetime import date, timedelta
 from random import choice, randrange
+from typing import Optional
 
 from .constants import (
     DATE_OF_BIRTH_FORMAT,
@@ -41,7 +42,7 @@ def calculate_checksum_digit(numbers: str) -> int:
     return sum * 9 % 10
 
 
-def generate_date_of_birth(start=date(1920, 1, 1), end=None):
+def generate_date_of_birth(start=date(1920, 1, 1), end=None) -> date:
     """Return a random date in a given period.
 
     Args:
@@ -107,9 +108,9 @@ def make_id_number(
 
 
 def generate(
-    date_of_birth: date = None,
-    gender: Gender = None,
-    citizenship: Citizenship = None,
+    date_of_birth: Optional[date] = None,
+    gender: Optional[Gender] = None,
+    citizenship: Optional[Citizenship] = None,
 ) -> str:
     """Generate a valid RSA ID number.
 
@@ -135,8 +136,11 @@ def generate(
         gender = choice([Gender.MALE, Gender.FEMALE])
     if not citizenship:
         citizenship = choice(
-            [Citizenship.SA_CITIZEN, Citizenship.PERMANENT_RESIDENT]
+            [Citizenship.SA_CITIZEN, Citizenship.PERMANENT_RESIDENT],
         )
+
     return make_id_number(
-        date_of_birth, gender=gender, citizenship=citizenship
+        date_of_birth,
+        gender=gender,
+        citizenship=citizenship,
     )
