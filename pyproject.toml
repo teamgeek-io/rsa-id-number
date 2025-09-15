@@ -1,3 +1,35 @@
+[project]
+name = "rsa-id-number"
+version = "0.1.0"
+description = "South African ID number utilities"
+readme = "README.md"
+authors = [
+  {name = "Teamgeek", email = "support@teamgeek.io"},
+]
+license = "MIT"
+classifiers = [
+  "Development Status :: 3 - Alpha",
+  "Intended Audience :: Developers",
+  "Topic :: Software Development :: Libraries",
+  "License :: OSI Approved :: MIT License",
+  "Programming Language :: Python :: 3",
+]
+keywords = ["utilities", "development"]
+requires-python = ">=3.11"
+dependencies = []
+
+[project.urls]
+Homepage = "https://github.com/teamgeek-io/rsa-id-number"
+Issues = "https://github.com/teamgeek-io/rsa-id-number/issues"
+
+[build-system]
+requires = ["uv_build>=0.8.17,<0.9.0"]
+build-backend = "uv_build"
+
+[tool.uv.build-backend]
+namespace = true
+module-name = "rsaidnumber"
+
 [tool.black]
 line-length = 79
 include = '\.pyi?$'
@@ -14,3 +46,19 @@ exclude = '''
   | dist
 )/
 '''
+
+[dependency-groups]
+dev = [
+    "black",
+    "doc8",
+    "flake8",
+    "pre-commit",
+    "pytest",
+    "pytest-cov",
+    "pytest-mock",
+    "sphinx",
+    "sphinx-autobuild",
+    "sphinx-rtd-theme",
+    "twine",
+    "wheel",
+]

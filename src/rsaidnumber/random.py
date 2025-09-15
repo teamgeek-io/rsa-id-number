@@ -1,6 +1,7 @@
 import re
 from datetime import date, timedelta
 from random import choice, randrange
+from typing import Optional
 
 from .constants import (
     DATE_OF_BIRTH_FORMAT,
@@ -10,6 +11,7 @@ from .constants import (
     GENDER_MALE_MAX,
     SA_CITIZEN_DIGIT,
     PERMANENT_RESIDENT_DIGIT,
+    REFUGEE_DIGIT,
     RACE_DIGIT,
     Gender,
     Citizenship,
@@ -41,7 +43,7 @@ def calculate_checksum_digit(numbers: str) -> int:
     return sum * 9 % 10
 
 
-def generate_date_of_birth(start=date(1920, 1, 1), end=None):
+def generate_date_of_birth(start=date(1920, 1, 1), end=None) -> date:
     """Return a random date in a given period.
 
     Args:
@@ -76,7 +78,7 @@ def generate_gender_digits(gender: Gender) -> str:
         number = randrange(GENDER_FEMALE_MIN, GENDER_FEMALE_MAX + 1)
     else:
         number = randrange(GENDER_MALE_MIN, GENDER_MALE_MAX + 1)
-    return f"{number:03d}"
+    return f"{number:04d}"
 
 
 def make_id_number(
@@ -97,8 +99,10 @@ def make_id_number(
     gender_digits = generate_gender_digits(gender)
     if citizenship == Citizenship.SA_CITIZEN:
         citizenship_digit = SA_CITIZEN_DIGIT
-    else:
+    elif citizenship == Citizenship.PERMANENT_RESIDENT:
         citizenship_digit = PERMANENT_RESIDENT_DIGIT
+    else:
+        citizenship_digit = REFUGEE_DIGIT
     digits = "".join(
         [date_of_birth_digits, gender_digits, citizenship_digit, RACE_DIGIT]
     )
@@ -107,9 +111,9 @@ def make_id_number(
 
 
 def generate(
-    date_of_birth: date = None,
-    gender: Gender = None,
-    citizenship: Citizenship = None,
+    date_of_birth: Optional[date] = None,
+    gender: Optional[Gender] = None,
+    citizenship: Optional[Citizenship] = None,
 ) -> str:
     """Generate a valid RSA ID number.
 
@@ -135,8 +139,15 @@ def generate(
         gender = choice([Gender.MALE, Gender.FEMALE])
     if not citizenship:
         citizenship = choice(
-            [Citizenship.SA_CITIZEN, Citizenship.PERMANENT_RESIDENT]
+            [
+                Citizenship.SA_CITIZEN,
+                Citizenship.PERMANENT_RESIDENT,
+                Citizenship.REFUGEE,
+            ],
         )
+
     return make_id_number(
-        date_of_birth, gender=gender, citizenship=citizenship
+        date_of_birth,
+        gender=gender,
+        citizenship=citizenship,
     )

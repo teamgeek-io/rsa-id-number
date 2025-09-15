@@ -41,7 +41,7 @@ def test_make_id_number(mocker):
 
 def test_generate():
     id_number = random.generate()
-    id_number = parse(id_number, False)
+    id_number = parse(id_number, False, allow_refugee=True)
     assert id_number.valid
 
 
