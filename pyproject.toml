@@ -1,6 +1,6 @@
 [project]
 name = "rsa-id-number"
-version = "0.0.4"
+version = "0.1.0"
 description = "South African ID number utilities"
 readme = "README.md"
 authors = [
