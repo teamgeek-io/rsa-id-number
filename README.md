@@ -20,6 +20,7 @@ Utilities for working with South African ID numbers.
 - **C**: The next digit is used to classify citizenship (*SA citizen*)
   - *SA citizen*: 0
   - *Permanent resident*: 1
+  - *Refugee*: 2
 - **A**: The next digit was used until 1980s to classify race
 - **Z**: The last digit is used as a checksum digit to verify the number (*Valid*)
 
