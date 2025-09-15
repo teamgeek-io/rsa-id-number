@@ -23,12 +23,13 @@ logger = logging.getLogger(__name__)
 
 
 class IdNumber:
-    def __init__(self, value: str):
+    def __init__(self, value: str, allow_refugee: bool = False):
         self.value = value
         self.error = None
         self.date_of_birth = None
         self.gender = None
         self.citizenship = None
+        self.allow_refugee = allow_refugee
         self.parse()
 
     def clean(self):
@@ -85,7 +86,7 @@ class IdNumber:
             self.citizenship = Citizenship.SA_CITIZEN
         elif citizenship == PERMANENT_RESIDENT_DIGIT:
             self.citizenship = Citizenship.PERMANENT_RESIDENT
-        elif citizenship == REFUGEE_DIGIT:
+        elif self.allow_refugee and citizenship == REFUGEE_DIGIT:
             self.citizenship = Citizenship.REFUGEE
         else:
             self.error = f"Invalid citizenship indicator: '{citizenship}'!"
@@ -114,7 +115,9 @@ class IdNumber:
         return self.clean()
 
 
-def parse(value: str, raise_exc: bool = True) -> IdNumber:
+def parse(
+    value: str, raise_exc: bool = True, allow_refugee: bool = False
+) -> IdNumber:
     """Parse `value` and validate against the RSA ID number format.
 
     Args:
@@ -132,7 +135,7 @@ def parse(value: str, raise_exc: bool = True) -> IdNumber:
         >>> id_number = rsaidnumber.parse(value)
 
     """
-    id_number = IdNumber(value)
+    id_number = IdNumber(value, allow_refugee=allow_refugee)
     id_number.parse()
     if not id_number.valid and raise_exc:
         raise ValueError(id_number.error)
