@@ -65,9 +65,23 @@ def test_id_number_valid():
     assert id_number.citizenship == expected_citizenship
 
 
+def test_refugee_id_number_valid():
+    id_number = rsaidnumber.IdNumber("8012215312288")
+    expected_date_of_birth = datetime(year=1980, month=12, day=21)
+    expected_gender = rsaidnumber.Gender.MALE
+    expected_citizenship = rsaidnumber.Citizenship.REFUGEE
+    assert id_number.valid
+    assert not id_number.error
+    assert id_number.date_of_birth == expected_date_of_birth
+    assert id_number.gender == expected_gender
+    assert id_number.citizenship == expected_citizenship
+
+
 def test_parse_valid():
     id_number = rsaidnumber.parse("8012215312080")
     assert id_number.valid
+    refugee_id_number = rsaidnumber.parse("8012215312288")
+    assert refugee_id_number.valid
 
 
 def test_parse_invalid():
