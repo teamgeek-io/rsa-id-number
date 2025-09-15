@@ -78,7 +78,7 @@ def generate_gender_digits(gender: Gender) -> str:
         number = randrange(GENDER_FEMALE_MIN, GENDER_FEMALE_MAX + 1)
     else:
         number = randrange(GENDER_MALE_MIN, GENDER_MALE_MAX + 1)
-    return f"{number:03d}"
+    return f"{number:04d}"
 
 
 def make_id_number(
